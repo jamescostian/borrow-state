@@ -1,0 +1,27 @@
+{
+  "name": "borrow-state",
+  "description": "Take turns borrowing (shared) state",
+  "version": "0.1.0",
+  "author": "James Costian <james@jamescostian.com>",
+  "bugs": {
+    "url": "https://github.com/jamescostian/borrow-state/issues"
+  },
+  "devDependencies": {
+    "standard": "*",
+    "tap-spec": "^4.0.2",
+    "tape": "^4.0.0"
+  },
+  "homepage": "https://github.com/jamescostian/borrow-state",
+  "keywords": [
+    "state"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamescostian/borrow-state.git"
+  },
+  "scripts": {
+    "test": "tape test/*.js | tap-spec && standard"
+  }
+}

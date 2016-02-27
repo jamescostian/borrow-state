@@ -17,7 +17,16 @@ npm install borrow-state
 ## Usage
 
 ```js
-var borrowState = require('borrow-state')
+const BorrowState = require('borrow-state')
+let myState = new BorrowState()
+myState.block().then((state) => {
+  state = {
+    foo: 5,
+    bar: 6,
+    baz: Math.PI
+  }
+  return state
+})
 ```
 
 ## Contributing

@@ -10,7 +10,9 @@ Take turns borrowing (shared) state
 
 ## Install
 
-```
+Assuming you have [Node](http://nodejs.org) and [NPM](https://npmjs.org) (which is bundled with Node), you can download the code like so:
+
+```bash
 npm install borrow-state
 ```
 

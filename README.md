@@ -21,13 +21,31 @@ npm install borrow-state
 ```js
 const BorrowState = require('borrow-state')
 let myState = new BorrowState()
+// You can write data, ensuring that no other data
 myState.block().then((state) => {
+  // Operation 1:
   state = {
     foo: 5,
     bar: 6,
     baz: Math.PI
   }
   return state
+}).then((state) => {
+  // Operation 2:
+  // This operation is garunteed to occur immediately after Operation 2
+  state = {
+    foo: 5,
+    bar: 6,
+    baz: Math.PI
+  }
+  return state
+}).then(myState.unblock)
+// Notice how the promise chain ended with myState.unblock
+// Otherwise the state would remain blocked!
+// I am ignoring error handling in this example, but may want to unblock if an error is caught
+
+myState.block().then((state) => {
+  // Operation 3
 })
 ```
 

@@ -39,15 +39,19 @@ myState.block().then((state) => {
     baz: Math.PI
   }
   return state
-}).then(myState.unblock)
+}).then((state) => state.unblock())
 // Notice how the promise chain ended with myState.unblock
 // Otherwise the state would remain blocked!
 // I am ignoring error handling in this example, but may want to unblock if an error is caught
 
 myState.block().then((state) => {
   // Operation 3
-})
+}).then((state) => state.unblock())
 ```
+
+While Operation 3 looks like it may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, it will not. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
+
+This way everything is safe, but it's also slow because you're purposefully blocking operations.
 
 ## Contributing
 

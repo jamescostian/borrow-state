@@ -33,23 +33,38 @@ myState.block().then((state) => {
 }).then((state) => {
   // Operation 2:
   // This operation is garunteed to occur immediately after Operation 2
-  state = {
-    foo: 5,
-    bar: 6,
-    baz: Math.PI
-  }
+  state.foo = 5
+  state.bar = 6
+  state.baz = Math.PI
   return state
 }).then((state) => state.unblock())
 // Notice how the promise chain ended with myState.unblock
 // Otherwise the state would remain blocked!
 // I am ignoring error handling in this example, but may want to unblock if an error is caught
 
-myState.block().then((state) => {
+// Note the 'r' which denotes read-only
+myState.block('r').then((state) => {
   // Operation 3
+  // Read date from state, but pinky-promise not to change it!
+  return state
+}).then((state) => state.unblock())
+
+// Again, note the 'r' which denotes read-only
+myState.block('r').then((state) => {
+  // Operation 4
+  // Read date from state, but pinky-promise not to change it!
+  return state
+}).then((state) => state.unblock())
+
+// This one does not have an 'r' so it is not necessarily read-only
+myState.block().then((state) => {
+  // Operation 5
+  // Do anything
+  return state
 }).then((state) => state.unblock())
 ```
 
-While Operation 3 looks like it may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, it will not. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
+While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
 
 This way everything is safe, but it's also slow because you're purposefully blocking operations.
 

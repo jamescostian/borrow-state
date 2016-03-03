@@ -46,22 +46,22 @@ myState.block().then((state) => {
 myState.block('r').then((state) => {
   // Operation 3
   // Read date from state, but pinky-promise not to change it!
-  return state
-}).then((state) => state.unblock())
+  state.unblock()
+})
 
 // Again, note the 'r' which denotes read-only
 myState.block('r').then((state) => {
   // Operation 4
   // Read date from state, but pinky-promise not to change it!
-  return state
-}).then((state) => state.unblock())
+  state.unblock()
+})
 
 // This one does not have an 'r' so it is not necessarily read-only
 myState.block().then((state) => {
   // Operation 5
   // Do anything
-  return state
-}).then((state) => state.unblock())
+  state.unblock()
+})
 ```
 
 While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.

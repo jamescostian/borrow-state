@@ -64,7 +64,7 @@ myState.block().then((state) => {
 })
 ```
 
-While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
+While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. Operation 5 will not occur until both Operations 3 and 4 have unblocked. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
 
 This way everything is safe, but it's also slow because you're purposefully blocking operations.
 

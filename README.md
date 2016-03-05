@@ -20,7 +20,9 @@ npm install borrow-state
 
 ```js
 const BorrowState = require('borrow-state')
-let myState = new BorrowState()
+let myState = new BorrowState({
+  unsafe: true // defaults to false. More about this later
+})
 // You can write data, ensuring that no other data
 myState.block().then((state) => {
   // Operation 1:
@@ -64,7 +66,11 @@ myState.block().then((state) => {
 })
 ```
 
-While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. Operation 5 will not occur until both Operations 3 and 4 have unblocked. The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
+While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. Operation 5 will not occur until both Operations 3 and 4 have unblocked (again, this is garunteed).
+
+The promise-based API allows for you to make a chain of promises which are run together, in sequential order, without anything else running in parallel or in between (unless it's a situation with read-only operations, because those can't conflict). That's why Operation 2 occurs right after Operation 1, and nothing can get between them. There is a caveat due to this design though - you *must* call `.unblock()` when you finish all of the Operations you want to batch together (like Operations 1 and 2 are batched together and end with `.unblock()`).
+
+The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive.
 
 This way everything is safe, but it's also slow because you're purposefully blocking operations.
 

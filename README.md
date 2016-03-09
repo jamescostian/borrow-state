@@ -72,7 +72,7 @@ The promise-based API allows for you to make a chain of promises which are run t
 
 The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive. So it is not possible for you to `.unblock()` somewhere else, outside of the operation that is currently blocking.
 
-This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together.
+This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together, which means they will be run in parallel. Of course, you need to make sure these read-only actions are, indeed, read-*only*! In the example, `unsafe` was set to `true` when initializing `myState`, so the state could have been modified by Operations 3 and 4, sacrificing data integrity. The default is for `unsafe` to be `false`, which would have meant Operations 3 and 4 would get brand-new copies of the state, so even if those operations tried to modify their copies, the actual state would remain unchanged.
 
 ## Caveats
 

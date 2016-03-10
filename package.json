@@ -6,6 +6,9 @@
   "bugs": {
     "url": "https://github.com/jamescostian/borrow-state/issues"
   },
+  "dependencies": {
+    "universal-copy": "^2"
+  },
   "devDependencies": {
     "standard": "*",
     "tap-spec": "^4.0.2",

@@ -9,7 +9,7 @@ const sleep50ms = (something) => new Promise(function (resolve, reject) {
 
 ;[true, false].forEach((unsafe) => {
   test(`read-only-parallel (${unsafe ? 'un' : ''}safe)`, (t) => {
-    t.plan(6)
+    t.plan(3)
     t.timeoutAfter(100)
     let myState = new BorrowState()
     ;[1, 2, 3].forEach(() => {

@@ -1,5 +1,5 @@
 const test = require('tape')
-const BorrowState = require('../lib/index.js')
+const BorrowState = require('../lib/module.js')
 
 const sleep50ms = (something) => new Promise(function (resolve, reject) {
   setTimeout(function () {

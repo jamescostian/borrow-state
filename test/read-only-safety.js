@@ -1,5 +1,5 @@
 const test = require('tape')
-const BorrowState = require('../lib/index.js')
+const BorrowState = require('../lib/module.js')
 
 test(`read-only-safety`, (t) => {
   t.plan(2)

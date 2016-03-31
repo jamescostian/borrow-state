@@ -9,7 +9,7 @@ test(`strict-order`, (t) => {
     hasHappened.push(1)
     state.unblock()
   })
-  myState.block('r').then((state) => {
+  myState.block().then((state) => {
     hasHappened.push(2)
     state.unblock()
   })

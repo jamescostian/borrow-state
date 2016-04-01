@@ -11,11 +11,14 @@ test(`strict-order`, (t) => {
   })
   myState.block().then((state) => {
     hasHappened.push(2)
+    return state
+  }).then((state) => {
+    hasHappened.push(3)
     state.unblock()
   })
   myState.block().then((state) => {
-    hasHappened.push(3)
-    t.equal(hasHappened, [1, 2, 3], 'The operations happened in the right order')
+    hasHappened.push(4)
+    t.equal(hasHappened, [1, 2, 3, 4], 'The operations happened in the right order')
     state.unblock()
   })
 })

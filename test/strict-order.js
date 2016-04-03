@@ -9,6 +9,7 @@ test(`strict-order`, (t) => {
     hasHappened.push(1)
     state.unblock()
   })
+
   myState.block().then((state) => {
     hasHappened.push(2)
     return state
@@ -25,9 +26,27 @@ test(`strict-order`, (t) => {
     hasHappened.push(6)
     state.unblock()
   })
+
   myState.block().then((state) => {
     hasHappened.push(7)
-    t.equal(hasHappened, [1, 2, 3, 4, 5, 6, 7], 'The operations happened in the right order')
+    return state
+  }).then((state) => {
+    hasHappened.push(8)
+    return state
+  }).then((state) => {
+    hasHappened.push(9)
+    return state
+  }).then((state) => {
+    hasHappened.push(10)
+    return state
+  }).then((state) => {
+    hasHappened.push(11)
+    state.unblock()
+  })
+
+  myState.block().then((state) => {
+    hasHappened.push(12)
+    t.equal(hasHappened, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'The operations happened in the right order')
     state.unblock()
   })
 })

@@ -1,6 +1,14 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
+const countTo = (num) => {
+  let array = []
+  for (let i = 0; i < num; i += 1) {
+    array.push(i + 1)
+  }
+  return array
+}
+
 test(`strict-order`, (t) => {
   t.plan(1)
   let hasHappened = []
@@ -46,7 +54,7 @@ test(`strict-order`, (t) => {
 
   myState.block().then((state) => {
     hasHappened.push(12)
-    t.equal(hasHappened, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 'The operations happened in the right order')
+    t.equal(hasHappened, countTo(12), 'The operations happened in the right order')
     state.unblock()
   })
 })

@@ -1,13 +1,7 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
-const countTo = (num) => {
-  let array = []
-  for (let i = 0; i < num; i += 1) {
-    array.push(i + 1)
-  }
-  return array
-}
+const countTo = require('./count-to.js')
 
 test(`strict-order`, (t) => {
   t.plan(1)

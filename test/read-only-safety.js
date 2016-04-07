@@ -1,6 +1,8 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
+const countTo = require('./count-to.js')
+
 test(`read-only-safety`, (t) => {
   t.plan(2)
   let hasHappened = []
@@ -19,7 +21,7 @@ test(`read-only-safety`, (t) => {
   myState.block().then((state) => {
     hasHappened.push(3)
     t.equal(state.foo, Math.PI, 'The state should still be set to pi')
-    t.equal(hasHappened, [1, 2, 3], 'The operations happened in the right order')
+    t.equal(hasHappened, countTo(3), 'The operations happened in the right order')
     state.unblock()
   })
 })
@@ -40,7 +42,7 @@ test(`read-only-safety, chained`, (t) => {
   }).then((state) => {
     hasHappened.push(3)
     t.equal(state.foo, Math.PI, 'The state should still be set to pi')
-    t.equal(hasHappened, [1, 2, 3], 'The operations happened in the right order')
+    t.equal(hasHappened, countTo(3), 'The operations happened in the right order')
     state.unblock()
   })
 })

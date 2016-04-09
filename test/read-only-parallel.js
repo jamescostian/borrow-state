@@ -1,11 +1,7 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
-const sleep50ms = (something) => new Promise(function (resolve, reject) {
-  setTimeout(function () {
-    resolve(something)
-  }, 50)
-})
+const sleep50ms = require('./sleep.js')
 
 ;[true, false].forEach((unsafe) => {
   test(`read-only-parallel (${unsafe ? 'un' : ''}safe)`, (t) => {

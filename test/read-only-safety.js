@@ -9,7 +9,7 @@ test(`read-only-safety`, (t) => {
   let myState = new BorrowState()
   myState.block().then((state) => {
     hasHappened.push(1)
-    state.foo = 0
+    state.foo = 4
     state.unblock()
   })
   myState.block('r').then((state) => {
@@ -20,7 +20,7 @@ test(`read-only-safety`, (t) => {
   // The following is not set to read-only so that it can occur *after* the previous
   myState.block().then((state) => {
     hasHappened.push(3)
-    t.equal(state.foo, 0, 'The state should still be set to pi')
+    t.equal(state.foo, 4, 'The state should still be set to pi')
     t.equal(hasHappened, countTo(3), 'The operations happened in the right order')
     state.unblock()
   })
@@ -32,7 +32,7 @@ test(`read-only-safety, chained`, (t) => {
   let myState = new BorrowState()
   myState.block().then((state) => {
     hasHappened.push(1)
-    state.foo = 0
+    state.foo = 4
     state.unblock()
   })
   myState.block('r').then((state) => {
@@ -41,7 +41,7 @@ test(`read-only-safety, chained`, (t) => {
     return state
   }).then((state) => {
     hasHappened.push(3)
-    t.equal(state.foo, 0, 'The state should still be set to pi')
+    t.equal(state.foo, 4, 'The state should still be set to pi')
     t.equal(hasHappened, countTo(3), 'The operations happened in the right order')
     state.unblock()
   })

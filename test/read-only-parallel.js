@@ -6,10 +6,11 @@ const countTo = require('./count-to.js')
 
 ;[true, false].forEach((unsafe) => {
   test(`read-only-parallel (${unsafe ? 'un' : ''}safe)`, (t) => {
-    t.plan(3)
+    t.plan(6)
     t.timeoutAfter(100)
     let myState = new BorrowState()
     countTo(3).forEach(() => {
+      t.ok(true)
       myState.block('r')
         .then(sleep50ms)
         .then((state) => {

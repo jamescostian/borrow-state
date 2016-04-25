@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "standard": "*",
-    "tap-spec": "^4.0.2",
-    "tape": "^4.0.0"
+    "tap-spec": "^4",
+    "tape": "^4"
   },
   "homepage": "https://github.com/jamescostian/borrow-state",
   "keywords": [

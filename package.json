@@ -10,7 +10,7 @@
     "universal-copy": "^2"
   },
   "devDependencies": {
-    "standard": "*",
+    "standard": "^6",
     "tap-spec": "^4",
     "tape": "^4"
   },

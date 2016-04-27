@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/npm/l/borrow-state.svg?style=flat)](https://github.com/jamescostian/borrow-state/blob/master/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/borrow-state.svg?style=flat)](https://www.npmjs.com/package/borrow-state)
 
-Take turns borrowing (shared) state
+Take turns borrowing (shared) state.
 
 ## Install
 

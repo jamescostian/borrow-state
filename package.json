@@ -1,6 +1,6 @@
 {
   "name": "borrow-state",
-  "description": "Take turns borrowing (shared) state",
+  "description": "Take turns borrowing (shared) state.",
   "version": "0.1.0",
   "author": "James Costian <james@jamescostian.com>",
   "bugs": {

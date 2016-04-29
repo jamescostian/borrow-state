@@ -42,7 +42,8 @@ myState.block().then((state) => {
 }).then((state) => state.unblock())
 // Notice how the promise chain ended with myState.unblock
 // Otherwise the state would remain blocked!
-// I am ignoring error handling in this example, but may want to unblock if an error is caught
+// I am ignoring error handling in this example,
+// but may want to unblock if an error is caught
 
 // Note the 'r' which denotes read-only
 myState.block('r').then((state) => {

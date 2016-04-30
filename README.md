@@ -86,7 +86,7 @@ In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow(
 
 ## Contributing
 
-Contributions welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
 
 ## License
 

@@ -1,3 +1,4 @@
+'use strict'
 module.exports = (num) => {
   let array = []
   for (let i = 0; i < num; i += 1) {

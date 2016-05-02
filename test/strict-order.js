@@ -1,3 +1,4 @@
+'use strict'
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 

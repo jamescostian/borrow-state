@@ -49,7 +49,7 @@ test(`strict-order`, (t) => {
 
   myState.block().then((state) => {
     hasHappened.push(12)
-    t.equal(hasHappened, countTo(12), 'The operations happened in the right order')
+    t.deepEqual(hasHappened, countTo(12), 'The operations happened in the right order')
     state.unblock()
   })
 })

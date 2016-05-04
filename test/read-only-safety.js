@@ -43,7 +43,7 @@ test(`read-only-safety, chained`, (t) => {
   }).then((state) => {
     hasHappened.push(3)
     t.equal(state.foo, 4, 'The state should still be set to pi')
-    t.equal(hasHappened, countTo(3), 'The operations happened in the right order')
+    t.deepEqual(hasHappened, countTo(3), 'The operations happened in the right order')
     state.unblock()
   })
 })

@@ -2,7 +2,7 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
-const sleep50ms = require('./sleep.js')
+const sleep50ms = require('./sleep.js')(50)
 const countTo = require('./count-to.js')
 
 ;[true, false].forEach((unsafe) => {

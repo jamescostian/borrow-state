@@ -4,7 +4,7 @@ const BorrowState = require('../lib/module.js')
 
 const countTo = require('./count-to.js')
 
-test(`strict-order`, (t) => {
+test('strict-order', (t) => {
   t.plan(1)
   let hasHappened = []
   let myState = new BorrowState()

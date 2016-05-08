@@ -5,3 +5,7 @@ sudo: false
 cache:
   directories:
     - node_modules
+script:
+  - 'npm run travis'
+after_script:
+  - 'cat ./coverage/lcov.info | coveralls'

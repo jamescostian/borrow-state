@@ -7,8 +7,6 @@
     "url": "https://github.com/jamescostian/borrow-state/issues"
   },
   "dependencies": {
-    "lodash.takewhile": "^4",
-    "once": "^1",
     "universal-copy": "^2"
   },
   "devDependencies": {

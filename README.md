@@ -81,8 +81,8 @@ In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow(
 
 + You can't touch your state's `unblock` property
 + You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state
-+ You *must* unblock or else things will stay blocked
-+ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity. Conversely, if you use the default (`unsafe: false`), integrity is always maintained *but* you can't have two read-only operations happening simultaneously through the API :weary:
++ For every `.block()`, there must be an `.unblock()`. If there is one more `.block()` than there are `.unblock()`s, the system will remained blocked until there is a new `.unblock()`
++ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity (and there is no reason to use this module besides maintaining integrity). Conversely, if you use the default (`unsafe: false`), integrity is always maintained *but* you can't have two read-only operations happening simultaneously through the API.
 
 ## Contributing
 

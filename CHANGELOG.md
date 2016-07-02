@@ -5,8 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [v1.0.1][1.0.1]
+### Changed
+- Add support for browsers, fix minor things
+
 ## 1.0.0 - 2016-5-11
 ### Added
 - Basic functionality, tests, etc.
 
-[unreleased]: https://github.com/jamescostian/borrow-state/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/jamescostian/borrow-state/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/jamescostian/borrow-state/compare/v1.0.0...v1.0.1

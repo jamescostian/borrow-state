@@ -73,14 +73,14 @@ The promise-based API allows for you to make a chain of promises which are run t
 
 The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive. So it is not possible for you to `.unblock()` somewhere else, outside of the operation that is currently blocking.
 
-This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together, which means they will be run in parallel. Of course, you need to make sure these read-only actions are, indeed, read-*only*! In the example, `unsafe` was set to `true` when initializing `myState`, so the state could have been modified by Operations 3 and 4, sacrificing data integrity. The default is for `unsafe` to be `false`, which would have meant Operations 3 and 4 would get brand-new copies of the state, so even if those operations tried to modify their copies, the actual state would remain unchanged.
+This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together, which means they will be run in parallel. Of course, you need to make sure these read-only actions are, indeed, read-*only*! In the example, `unsafe` was set to `true` when initializing `myState`, so the state could have been modified by Operations 3 and 4, sacrificing data integrity. The default is for `unsafe` to be `false`, which would have meant Operations 3 and 4 would get brand-new copies of the state, so even if those operations tried to modify their copies, the actual state would remain unchanged. More about unsafe in caveats, bullet 4
 
 In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow()` and `.putBack()`
 
 ## Caveats
 
 + You can't touch your state's `unblock` property
-+ You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state
++ You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state, so don't even try to reassign state
 + For every `.block()`, there must be an `.unblock()`. If there is one more `.block()` than there are `.unblock()`s, the system will remained blocked until there is a new `.unblock()`
 + If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity (and there is no reason to use this module besides maintaining integrity). In addition, `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`). Conversely, if you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state, *but* you can't have two read-only operations happening simultaneously through the API, and the state will be deep cloned either before or after each operation.
 + You need to be able to run ES2015 or transpile this code

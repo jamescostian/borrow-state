@@ -82,7 +82,7 @@ In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow(
 + You can't touch your state's `unblock` property
 + You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state
 + For every `.block()`, there must be an `.unblock()`. If there is one more `.block()` than there are `.unblock()`s, the system will remained blocked until there is a new `.unblock()`
-+ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity (and there is no reason to use this module besides maintaining integrity). Conversely, if you use the default (`unsafe: false`), integrity is always maintained *but* you can't have two read-only operations happening simultaneously through the API.
++ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity (and there is no reason to use this module besides maintaining integrity). In addition, `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`). Conversely, if you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state, *but* you can't have two read-only operations happening simultaneously through the API, and the state will be deep cloned either before or after each operation.
 + You need to be able to run ES2015 or transpile this code
 
 ## Contributing

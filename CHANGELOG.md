@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- More tests
+
+### Changed
+- Use actual Promises instead of PromiseChains
 
 ## [v1.0.2][1.0.2]
 ### Fixed

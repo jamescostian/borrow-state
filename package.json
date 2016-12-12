@@ -11,14 +11,10 @@
   },
   "devDependencies": {
     "coveralls": "^2",
-    "istanbul": "^0.4",
-    "snazzy": "^4",
-    "standard": "^7",
+    "nyc": "^10",
+    "snazzy": "^5",
     "tap-spec": "^4",
     "tape": "^4"
-  },
-  "engines": {
-    "node": ">=6.0.0"
   },
   "homepage": "https://github.com/jamescostian/borrow-state",
   "keywords": [
@@ -31,11 +27,20 @@
     "url": "https://github.com/jamescostian/borrow-state.git"
   },
   "scripts": {
-    "cov": "istanbul cover test/start.js",
-    "lint": "snazzy",
-    "pretest": "npm run lint",
-    "pretravis": "npm run lint",
-    "test": "node test/start.js | tap-spec",
-    "travis": "npm run cov"
+    "coveralls": "nyc --reporter=text-lcov node test/start.js | coveralls",
+    "cov": "nyc --reporter=html --reporter=text node test/start.js",
+    "pretest": "snazzy",
+    "test": "node test/start.js | tap-spec"
+  },
+  "nyc": {
+    "lines": 99,
+    "statements": 99,
+    "functions": 99,
+    "branches": 99,
+    "include": [
+      "lib/**/*.js"
+    ],
+    "cache": true,
+    "all": true
   }
 }

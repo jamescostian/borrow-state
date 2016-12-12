@@ -2,7 +2,7 @@
 const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
-test('post-unblock-safety (safe)', (t) => {
+test('post-unblock-safety', (t) => {
   t.plan(4)
   let myState = new BorrowState()
   myState.block().then((state) => {
@@ -28,15 +28,5 @@ test('post-unblock-safety (safe)', (t) => {
     t.equal(state.bar, 5, 'Write operations do not permit mutations after state.block()')
     t.equal(state.foo, 5, 'Read-only operations do not permit mutations before/after state.block()')
     state.unblock()
-  })
-})
-
-test('post-unblock-safety (unsafe)', (t) => {
-  t.plan(2)
-  let myState = new BorrowState({unsafe: true})
-  myState.block().then((state) => {
-    state.unblock()
-    t.throws(state.unblock, 'state.unblock() doesn\'t work the second time you call it')
-    t.throws(state.unblock, 'state.unblock() doesn\'t work the third time you call it')
   })
 })

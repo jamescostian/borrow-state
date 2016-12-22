@@ -1,11 +1,10 @@
 'use strict'
-const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
 const countTo = require('./count-to.js')
 
-test('read-only-safety', (t) => {
-  t.plan(2)
+it('prevents mutations from taking place in read-only mode (unsafe: false)', () => {
+  expect.assertions(2)
   let hasHappened = []
   let myState = new BorrowState()
   myState.block().then((state) => {
@@ -19,10 +18,10 @@ test('read-only-safety', (t) => {
     state.unblock()
   })
   // The following is not set to read-only so that it can occur *after* the previous
-  myState.block().then((state) => {
+  return myState.block().then((state) => {
     hasHappened.push(3)
-    t.equal(state.foo, 4, 'The state should still be unchanged by the read-only operation')
-    t.deepEqual(hasHappened, countTo(3), 'The operations happened in the right order')
+    expect(state.foo).toBe(4)
+    expect(hasHappened).toEqual(countTo(3))
     state.unblock()
   })
 })

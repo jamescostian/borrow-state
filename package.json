@@ -11,12 +11,17 @@
   },
   "devDependencies": {
     "coveralls": "^2",
-    "nyc": "^10",
-    "snazzy": "^5",
-    "tap-spec": "^4",
-    "tape": "^4"
+    "jest": "^18",
+    "snazzy": "^5"
   },
   "homepage": "https://github.com/jamescostian/borrow-state",
+  "jest": {
+    "testRegex": "tests/(.*)\\.test\\.js$",
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ],
+    "collectCoverage": true
+  },
   "keywords": [
     "state"
   ],
@@ -27,20 +32,13 @@
     "url": "https://github.com/jamescostian/borrow-state.git"
   },
   "scripts": {
-    "coveralls": "nyc --reporter=text-lcov node test/start.js | coveralls",
-    "cov": "nyc --reporter=html --reporter=text node test/start.js",
+    "coveralls": "cat coverage/lcov.info | coveralls",
     "pretest": "snazzy",
-    "test": "node test/start.js | tap-spec"
+    "test": "jest"
   },
-  "nyc": {
-    "lines": 99,
-    "statements": 99,
-    "functions": 99,
-    "branches": 99,
-    "include": [
-      "lib/**/*.js"
-    ],
-    "cache": true,
-    "all": true
+  "standard": {
+    "env": [
+      "jest"
+    ]
   }
 }

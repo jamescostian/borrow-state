@@ -1,11 +1,10 @@
 'use strict'
-const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
 const countTo = require('./count-to.js')
 
-test('strict-order', (t) => {
-  t.plan(1)
+it('runs everything in a strict ordering, not allowing anything to happen outside of that order', () => {
+  expect.assertions(1)
   let hasHappened = []
   let myState = new BorrowState()
   myState.block().then((state) => {
@@ -47,9 +46,9 @@ test('strict-order', (t) => {
     state.unblock()
   })
 
-  myState.block().then((state) => {
+  return myState.block().then((state) => {
     hasHappened.push(12)
-    t.deepEqual(hasHappened, countTo(12), 'The operations happened in the right order')
+    expect(hasHappened).toEqual(countTo(12))
     state.unblock()
   })
 })

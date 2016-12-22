@@ -1,9 +1,8 @@
 'use strict'
-const test = require('tape')
 const BorrowState = require('../lib/module.js')
 
-test('post-unblock-safety', (t) => {
-  t.plan(4)
+it('prevents mutations after calling unblock, and prevents multiple calls to unblock (unsafe: true)', () => {
+  expect.assertions(4)
   let myState = new BorrowState()
   myState.block().then((state) => {
     state.foo = 5
@@ -20,13 +19,13 @@ test('post-unblock-safety', (t) => {
     // Mutation should not work because it takes place *after* state.unblock()
     state.unblock()
     state.bar = 3
-    t.throws(state.unblock, 'state.unblock() doesn\'t work the second time you call it')
-    t.throws(state.unblock, 'state.unblock() doesn\'t work the third time you call it')
+    expect(state.unblock).toThrow()
+    expect(state.unblock).toThrow()
   })
 
-  myState.block('r').then((state) => {
-    t.equal(state.bar, 5, 'Write operations do not permit mutations after state.block()')
-    t.equal(state.foo, 5, 'Read-only operations do not permit mutations before/after state.block()')
+  return myState.block('r').then((state) => {
+    expect(state.bar).toBe(5)
+    expect(state.foo).toBe(5)
     state.unblock()
   })
 })

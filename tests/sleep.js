@@ -17,7 +17,7 @@
 module.exports = time => {
   return state => {
     return new Promise(resolve => {
-      setTimeout(() => resolve(state), 50)
+      setTimeout(() => resolve(state), time)
     })
   }
 }

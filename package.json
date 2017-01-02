@@ -17,8 +17,15 @@
   "homepage": "https://github.com/jamescostian/borrow-state",
   "jest": {
     "testRegex": "tests/(.*)\\.test\\.js$",
-    "coverageReporters": ["json", "lcov", "text", "html"],
-    "collectCoverageFrom": ["lib/**/*.js"],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ],
     "collectCoverage": true
   },
   "keywords": [

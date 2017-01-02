@@ -10,31 +10,28 @@ Take turns borrowing (shared) state.
 
 ## Install
 
-Assuming you have [Node](http://nodejs.org) and [NPM](https://npmjs.org) (which is bundled with Node), you can download the code like so:
-
-```bash
-npm install borrow-state
-```
+Assuming you have [Node](http://nodejs.org), just run `npm install -S borrow-state`
 
 ## Usage
 
 ```js
 const BorrowState = require('borrow-state')
 let myState = new BorrowState({
-  unsafe: true // defaults to false. More about this later
-})
-// You can write data, ensuring that no other data
-myState.block().then((state) => {
-  // Operation 1:
-  state = {
+  unsafe: true, // defaults to false. More about this later
+  initial: { // defaults to {}. The initial state is put here
     foo: 5,
     bar: 6,
     baz: Math.PI
   }
+})
+// You can write data, ensuring that nothing else can read from the state until you explicitly unblock the state
+myState.block().then((state) => {
+  // Operation 1:
+  state.baz = Math.PI
   return state
 }).then((state) => {
   // Operation 2:
-  // This operation is garunteed to occur immediately after Operation 2
+  // This operation is garunteed to occur immediately after Operation 1
   state.foo = 5
   state.bar = 6
   state.baz = Math.PI
@@ -43,9 +40,9 @@ myState.block().then((state) => {
 // Notice how the promise chain ended with myState.unblock
 // Otherwise the state would remain blocked!
 // I am ignoring error handling in this example,
-// but may want to unblock if an error is caught
+// but you may want to unblock if an error is caught
 
-// Note the 'r' which denotes read-only
+// Note the 'r' which denotes read-only.
 myState.block('r').then((state) => {
   // Operation 3
   // Read date from state, but pinky-promise not to change it!
@@ -55,25 +52,25 @@ myState.block('r').then((state) => {
 // Again, note the 'r' which denotes read-only
 myState.block('r').then((state) => {
   // Operation 4
-  // Read date from state, but pinky-promise not to change it!
+  // Since there are two read-only operations in a row, they will be executed concurrently!
   state.unblock()
 })
 
 // This one does not have an 'r' so it is not necessarily read-only
 myState.block().then((state) => {
   // Operation 5
-  // Do anything
+  // This will not run concurrently with Operations 3 and 4 - it will run after them.
   state.unblock()
 })
 ```
 
-While Operation 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. Operation 5 will not occur until both Operations 3 and 4 have unblocked (again, this is garunteed).
+While Operations 3 and 4 look like they may run concurrently with Operation 1 or 2, or maybe even between Operation 1 and 2, they will not. Operation 1 will occur first, followed by Operation 2, and that is garunteed. Next, Operations 3 and 4 will occur concurrently, because they are both read-only operations. Operation 5 will not occur until both Operations 3 and 4 have unblocked (again, this is garunteed).
 
-The promise-based API allows for you to make a chain of promises which are run together, in sequential order, without anything else running in parallel or in between (unless it's a situation with read-only operations, because those can't conflict). That's why Operation 2 occurs right after Operation 1, and nothing can get between them. There is a caveat due to this design though - you *must* call `.unblock()` when you finish all of the Operations you want to batch together (like Operations 1 and 2 are batched together and end with `.unblock()`).
+The promise-based API allows for you to make a chain of promises which are run together, in sequential order, without any other operations on the state being allowed to run in between (unless it's a situation with read-only operations, which can be run concurrently because they shouldn't conflict). That's why Operation 2 occurs right after Operation 1, and nothing can get between them. There is a caveat due to this design though - you *must* call `.unblock()` when you finish all of the Operations you want to batch together (like Operations 1 and 2 are batched together and end with `.unblock()`).
 
-The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks. Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive. So it is not possible for you to `.unblock()` somewhere else, outside of the operation that is currently blocking.
+The state cannot be accessed without using the `.block()` method, so there isn't any way of getting around the blocks (unless you set `unsafe: true`). Whoever calls `.block()` first will get to do things first, until they call `.unblock()` on the state object they receive. So it is not possible for you to `.unblock()` somewhere else, outside of the operation that is currently blocking.
 
-This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together, which means they will be run in parallel. Of course, you need to make sure these read-only actions are, indeed, read-*only*! In the example, `unsafe` was set to `true` when initializing `myState`, so the state could have been modified by Operations 3 and 4, sacrificing data integrity. The default is for `unsafe` to be `false`, which would have meant Operations 3 and 4 would get brand-new copies of the state, so even if those operations tried to modify their copies, the actual state would remain unchanged. More about unsafe in caveats, bullet 4
+This way everything is safe, but it's also slow because you're purposefully blocking operations. To make things faster, read-only operations can be batched together, which means they will be run concurrently. Of course, you need to make sure these read-only actions are, indeed, read-*only*! In the example, `unsafe` was set to `true` when initializing `myState`, so the state could have been modified by Operations 3 and 4, sacrificing data integrity. The default is for `unsafe` to be `false`, which would have meant Operations 3 and 4 would get brand-new copies of the state, so even if those operations tried to modify their copies, the actual state would remain unchanged. More about unsafe in caveats, bullet 4
 
 In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow()` and `.putBack()`
 
@@ -81,8 +78,8 @@ In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow(
 
 + You can't touch your state's `unblock` property
 + You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state, so don't even try to reassign state
-+ For every `.block()`, there must be an `.unblock()`. If there is one more `.block()` than there are `.unblock()`s, the system will remained blocked until there is a new `.unblock()`
-+ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, your state loses all integrity (and there is no reason to use this module besides maintaining integrity). In addition, `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`), and one can even run `state.unblock()` multiple times. If you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state, *but* you can't have two read-only operations happening simultaneously through the API, and the state will be deep cloned either before or after each operation.
++ For every `.block()`, there must be an `.unblock()`.
++ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, or if you pass in something as the initial state and then use that object you passed in, you sacrifice data integrity (and there is no reason to use this module besides maintaining integrity). In addition, `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`), and one can even run `state.unblock()` multiple times. If you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state.
 + You need to be able to run ES2015 or transpile this code
 
 ## Contributing

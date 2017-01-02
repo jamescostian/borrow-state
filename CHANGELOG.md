@@ -5,7 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
-Suport for Node v6 and beyond
+- Support for Node v6 and beyond
+- Support for setting an initial state
 
 ### Changed
 - Use Jest instead of tape + NYC

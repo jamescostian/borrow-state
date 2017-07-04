@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "coveralls": "^2",
-    "jest": "^20",
+    "jest": "^20.0.4",
     "snazzy": "^7",
     "standard": "^10"
   },

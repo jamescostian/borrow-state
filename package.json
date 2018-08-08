@@ -34,7 +34,7 @@
     "state"
   ],
   "license": "ISC",
-  "main": "lib/module.js",
+  "main": "module.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/jamescostian/borrow-state.git"

@@ -1,5 +1,5 @@
 'use strict'
-const BorrowState = require('../lib/module.js')
+const BorrowState = require('../module.js')
 
 it('prevents mutations after calling unblock, and prevents multiple calls to unblock (unsafe: true)', () => {
   expect.assertions(4)

@@ -1,5 +1,5 @@
 'use strict'
-const BorrowState = require('../lib/module.js')
+const BorrowState = require('../module.js')
 
 const sleepFactory = require('./sleep.js')
 const sleep50ms = sleepFactory(50)

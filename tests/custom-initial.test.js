@@ -1,5 +1,5 @@
 'use strict'
-const BorrowState = require('../lib/module.js')
+const BorrowState = require('../module.js')
 
 it('allows you to initialize it with any object', () => {
   let myState0 = new BorrowState({initial: {foo: 5}})

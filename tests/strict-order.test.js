@@ -1,5 +1,5 @@
 'use strict'
-const BorrowState = require('../lib/module.js')
+const BorrowState = require('../module.js')
 
 const countTo = require('./count-to.js')
 

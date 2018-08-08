@@ -7,9 +7,11 @@
 
 Take turns borrowing (shared) state.
 
+Before using this, make sure you *actually need* to use this. JS usually only runs a single thread at a time (unless you use something like Web Workers) which can help avoid situations where you need this.
+
 ## Install
 
-Assuming you have [Node](http://nodejs.org), just run `npm install -S borrow-state`
+Assuming you have [Node](http://nodejs.org), just run `npm install borrow-state`
 
 ## Usage
 
@@ -30,16 +32,15 @@ myState.block().then((state) => {
   return state
 }).then((state) => {
   // Operation 2:
-  // This operation is garunteed to occur immediately after Operation 1
+  // This operation is guaranteed to occur immediately after Operation 1
   state.foo = 5
   state.bar = 6
   state.baz = Math.PI
   return state
 }).then((state) => state.unblock())
+  .catch((state) => state.unblock())
 // Notice how the promise chain ended with myState.unblock
 // Otherwise the state would remain blocked!
-// I am ignoring error handling in this example,
-// but you may want to unblock if an error is caught
 
 // Note the 'r' which denotes read-only.
 myState.block('r').then((state) => {
@@ -75,11 +76,11 @@ In addition, instead of using `.block()` and `.unblock()`, one can use `.borrow(
 
 ## Caveats
 
-+ You can't touch your state's `unblock` property
-+ You can't create a brand new object for your state - you must manipulate the existing object that was passed in when asking for the state, so don't even try to reassign state
-+ For every `.block()`, there must be an `.unblock()`.
-+ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, or if you pass in something as the initial state and then use that object you passed in, you sacrifice data integrity (and there is no reason to use this module besides maintaining integrity). In addition, `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`), and one can even run `state.unblock()` multiple times. If you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state.
-+ You need to be able to run ES2015 or transpile this code
++ Node v6+ only (tested against v6-v10)
++ For every `.block()`, there must be an `.unblock()` (unless you *want* a [deadlock](https://en.wikipedia.org/wiki/Deadlock))
++ You can't touch your state's `unblock` property or re-assign the state variable (just change it's properties!)
++ If you use `unsafe: true`, things will be faster *but* if a read-only operation is not actually read-only, or if you pass in something (call it X) as the initial state and you use X elsewhere, you sacrifice data integrity (and there is no reason to use this module besides maintaining integrity). You are expected to not directly use any references to the object you provide or any of it's children (or children of children, etc.)
++ `unblock()` is not very strict with `unsafe: true` - one can run `state.unblock()` and then mutate the state (e.g. `state.unblock(); state.foo += 5`), and one can even run `state.unblock()` multiple times. If you use the default (`unsafe: false`), integrity is always maintained and `unblock()` will prevent future unauthorized writes to the state.
 
 ## Contributing
 

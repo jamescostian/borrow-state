@@ -3,7 +3,7 @@ const BorrowState = require('../module.js')
 
 it('prevents mutations after calling unblock, and prevents multiple calls to unblock (unsafe: true)', () => {
   expect.assertions(4)
-  let myState = new BorrowState()
+  const myState = new BorrowState()
   myState.block().then((state) => {
     state.foo = 5
     state.bar = 5

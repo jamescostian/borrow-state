@@ -5,8 +5,8 @@ const countTo = require('./count-to.js')
 
 it('prevents mutations from taking place in read-only mode (unsafe: false)', () => {
   expect.assertions(2)
-  let hasHappened = []
-  let myState = new BorrowState()
+  const hasHappened = []
+  const myState = new BorrowState()
   myState.block().then((state) => {
     hasHappened.push(1)
     state.foo = 4

@@ -11,7 +11,7 @@ describe('read-only blocking operations', () => {
   [true, false].forEach((unsafe) => {
     it(`happens concurrently (unsafe: ${unsafe ? 'true' : 'false'})`, () => {
       expect.assertions(3)
-      let myState = new BorrowState({ unsafe: unsafe })
+      const myState = new BorrowState({ unsafe: unsafe })
       countTo(3).forEach((i) => {
         myState.block('r')
           .then(sleep50ms)

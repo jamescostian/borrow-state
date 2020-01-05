@@ -5,8 +5,8 @@ const countTo = require('./count-to.js')
 
 it('runs everything in a strict ordering, not allowing anything to happen outside of that order', () => {
   expect.assertions(1)
-  let hasHappened = []
-  let myState = new BorrowState()
+  const hasHappened = []
+  const myState = new BorrowState()
   myState.block().then((state) => {
     hasHappened.push(1)
     state.unblock()

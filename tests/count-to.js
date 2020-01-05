@@ -1,6 +1,6 @@
 'use strict'
 module.exports = (num) => {
-  let array = []
+  const array = []
   for (let i = 0; i < num; i += 1) {
     array.push(i + 1)
   }

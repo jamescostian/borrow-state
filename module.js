@@ -30,7 +30,7 @@ const BorrowState = function (options) {
 
   let runningOperations = 0 // how many operations are currently running (must be zero to start a new op, can be >1 if they are all read-only)
   let state = options && options.initial ? options.initial : {} // current state
-  let pendingOperations = [] // queue of operations, each of which is an object with .readOnly and .resolve (which kicks off the operations)
+  const pendingOperations = [] // queue of operations, each of which is an object with .readOnly and .resolve (which kicks off the operations)
 
   // This (private) function will execute the first operation in pendingOperations
   // (unless an operation is already running or there aren't any pending operations)
@@ -44,7 +44,7 @@ const BorrowState = function (options) {
       // Make a list of operations that will be done concurrently, starting with only the first one
       let ops = [pendingOperations.shift()]
       // Is that first operation read-only?
-      let readOnly = ops[0].readOnly
+      const readOnly = ops[0].readOnly
       if (readOnly) {
         // The first operation is read-only, so take all of the read-only operations that come after it, until the first non-read-only operation
         ops = ops.concat(takeUntilNotReadOnly(pendingOperations))

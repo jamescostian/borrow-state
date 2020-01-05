@@ -3,9 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v2.0.4][2.0.4] - 2020-01-5
+### Changed
+- Upgrade dependencies to non-vulnerable versions
+
 ## [v2.0.3][2.0.3] - 2019-08-31
 ### Changed
-- Upgrade packages to non-vulnerable versions
+- Upgrade dependencies to non-vulnerable versions
 
 ## [v2.0.2][2.0.2] - 2018-08-08
 ### Changed
@@ -51,6 +55,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality, tests, etc.
 
+[2.0.4]: https://github.com/jamescostian/borrow-state/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/jamescostian/borrow-state/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/jamescostian/borrow-state/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/jamescostian/borrow-state/compare/v2.0.0...v2.0.1
